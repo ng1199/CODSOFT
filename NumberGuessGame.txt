@@ -1,0 +1,61 @@
+// Include the necessary libraries
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+// Define a constant for the maximum number
+const int MAX_NUMBER = 100;
+
+// Define a function to generate a random number between 1 and MAX_NUMBER
+int generateRandomNumber() {
+  // Initialize the random seed with the current time
+  srand(time(NULL));
+
+  // Return a random number between 1 and MAX_NUMBER
+  return rand() % MAX_NUMBER + 1;
+}
+
+// Define a function to get the user's input for a guess
+int getGuess() {
+  int guess;
+  std::cout << "Enter your guess (1-" << MAX_NUMBER << "): ";
+  std::cin >> guess;
+  return guess;
+}
+
+// Define the main function
+int main() {
+  // Generate a random number
+  int randomNumber = generateRandomNumber();
+
+  // Declare a variable to store the user's guess
+  int userGuess;
+
+  // Declare a variable to store the number of attempts
+  int attempts = 0;
+
+  // Loop until the user guesses the correct number
+  do {
+    // Get the user's guess
+    userGuess = getGuess();
+
+    // Increment the number of attempts
+    attempts++;
+
+    // Check if the user's guess is correct
+    if (userGuess == randomNumber) {
+      // Print a congratulatory message and the number of attempts
+      std::cout << "You guessed it right! The number was " << randomNumber << ".\n";
+      std::cout << "You took " << attempts << " attempts to guess the number.\n";
+    } else {
+      // Print a hint message based on whether the guess is too high or too low
+      if (userGuess > randomNumber) {
+        std::cout << "Your guess is too high. Try again.\n";
+      } else {
+        std::cout << "Your guess is too low. Try again.\n";
+      }
+    }
+  } while (userGuess != randomNumber);
+
+  return 0;
+}

@@ -1,0 +1,183 @@
+// Include the necessary libraries
+#include <iostream>
+#include <vector>
+#include <string>
+
+// Define a class to represent a task
+class Task {
+  public:
+    // A constructor that takes a name and a status
+    Task(std::string name, bool done) {
+      this->name = name;
+      this->done = done;
+    }
+
+    // A method to get the name of the task
+    std::string getName() {
+      return this->name;
+    }
+
+    // A method to get the status of the task
+    bool isDone() {
+      return this->done;
+    }
+
+    // A method to mark the task as done
+    void markAsDone() {
+      this->done = true;
+    }
+
+  private:
+    // A string to store the name of the task
+    std::string name;
+
+    // A boolean to store the status of the task
+    bool done;
+};
+
+// Define a class to represent a to-do list
+class ToDoList {
+  public:
+    // A constructor that creates an empty list
+    ToDoList() {
+      this->tasks = {};
+    }
+
+    // A method to add a new task to the list
+    void addTask(std::string name) {
+      // Create a new task object with the given name and false status
+      Task newTask(name, false);
+
+      // Push the task object to the vector of tasks
+      this->tasks.push_back(newTask);
+
+      // Print a confirmation message
+      std::cout << "Added " << name << " to the list.\n";
+    }
+
+    // A method to view all the tasks in the list
+    void viewTasks() {
+      // Check if the list is empty
+      if (this->tasks.empty()) {
+        // Print a message that there are no tasks
+        std::cout << "You have no tasks in your list.\n";
+      } else {
+        // Print a header for the list
+        std::cout << "Here are your tasks:\n";
+
+        // Loop through the vector of tasks
+        for (int i = 0; i < this->tasks.size(); i++) {
+          // Get the current task object
+          Task currentTask = this->tasks[i];
+
+          // Print the index, name, and status of the task
+          std::cout << i + 1 << ". " << currentTask.getName();
+          if (currentTask.isDone()) {
+            std::cout << " (Done)\n";
+          } else {
+            std::cout << " (Not Done)\n";
+          }
+        }
+      }
+    }
+
+    // A method to delete a task from the list by index
+    void deleteTask(int index) {
+      // Check if the index is valid
+      if (index > 0 && index <= this->tasks.size()) {
+        // Get the name of the task to be deleted
+        std::string name = this->tasks[index - 1].getName();
+
+        // Erase the task object from the vector of tasks by index
+        this->tasks.erase(this->tasks.begin() + index - 1);
+
+        // Print a confirmation message
+        std::cout << "Deleted " << name << " from the list.\n";
+      } else {
+        // Print an error message that the index is invalid
+        std::cout << "Invalid index. Please enter a valid index.\n";
+      }
+    }
+
+  private:
+    // A vector to store the task objects
+    std::vector<Task> tasks;
+};
+
+// Define a function to display the menu options
+void displayMenu() {
+  std::cout << "\nWhat do you want to do?\n";
+  std::cout << "1. Add a new task\n";
+  std::cout << "2. View all tasks\n";
+  std::cout << "3. Delete a task\n";
+  std::cout << "4. Exit\n";
+}
+
+// Define a function to get the user's choice from the menu options
+int getChoice() {
+  int choice;
+  std::cout << "Enter your choice (1/2/3/4): ";
+  std::cin >> choice;
+  return choice;
+}
+
+// Define a function to get the user's input for a new task name
+std::string getTaskName() {
+  std::string name;
+  std::cout << "Enter the name of the task: ";
+  std::cin.ignore(); // Ignore any leftover newline characters in the input buffer
+  std::getline(std::cin, name); // Get the whole line as input
+  return name;
+}
+
+// Define a function to get the user's input for a task index
+int getTaskIndex() {
+  int index;
+  std::cout << "Enter the index of the task to delete: ";
+  std::cin >> index;
+  return index;
+}
+
+// Define the main function
+int main() {
+  // Create a to-do list object
+  ToDoList myList;
+
+  // Declare a variable to store the user's choice
+  int choice;
+
+  // Loop until the user chooses to exit
+  do {
+    // Display the menu options
+    displayMenu();
+
+    // Get the user's choice
+    choice = getChoice();
+
+    // Perform different actions based on the user's choice
+    switch (choice) {
+      case 1:
+        // Add a new task to the list
+        myList.addTask(getTaskName());
+        break;
+      case 2:
+        // View all the tasks in the list
+        myList.viewTasks();
+        break;
+      case 3:
+        // Delete a task from the list by index
+        myList.deleteTask(getTaskIndex());
+        break;
+      case 4:
+        // Exit the program
+        std::cout << "Thank you for using the to-do list program. Goodbye!\n";
+        break;
+      default:
+        // Invalid choice
+        std::cout << "Invalid choice. Please enter a valid choice.\n";
+        break;
+    }
+  } while (choice != 4);
+
+  return 0;
+}
